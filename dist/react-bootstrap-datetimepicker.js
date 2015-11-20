@@ -95,7 +95,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _DateTimePickerJs2 = _interopRequireDefault(_DateTimePickerJs);
 
-	var _ConstantsJs = __webpack_require__(51);
+	var _ConstantsJs = __webpack_require__(48);
 
 	var _ConstantsJs2 = _interopRequireDefault(_ConstantsJs);
 
@@ -118,6 +118,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	          return "h:mm A";
 	        case _ConstantsJs2["default"].MODE_DATE:
 	          return "MM/DD/YY";
+	        case _ConstantsJs2["default"].MODE_MONTH:
+	          return "MM/YY";
 	        default:
 	          return "MM/DD/YY h:mm A";
 	      }
@@ -172,6 +174,22 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    this.getValue = function () {
 	      return (0, _moment2["default"])(_this.state.inputValue, _this.props.inputFormat, true).format(_this.props.format);
+	    };
+
+	    this.setSelectedMonth = function (e) {
+	      var target = e.target;
+
+	      if (target.className && !target.className.match(/disabled/g)) {
+	        return _this.setState({
+	          selectedDate: _this.state.viewDate.clone().month(e.target.innerHTML).date(_this.state.selectedDate.date()).hour(_this.state.selectedDate.hours()).minute(_this.state.selectedDate.minutes())
+	        }, function () {
+	          this.closePicker();
+	          this.props.onChange(this.state.selectedDate.format(this.props.format));
+	          return this.setState({
+	            inputValue: this.state.selectedDate.format(this.state.inputFormat)
+	          });
+	        });
+	      }
 	    };
 
 	    this.setSelectedDate = function (e) {
@@ -430,6 +448,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          mode: this.props.mode,
 	          ref: "widget",
 	          selectedDate: this.state.selectedDate,
+	          setSelectedMonth: this.setSelectedMonth,
 	          setSelectedDate: this.setSelectedDate,
 	          setSelectedHour: this.setSelectedHour,
 	          setSelectedMinute: this.setSelectedMinute,
@@ -486,7 +505,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      inputProps: _react.PropTypes.object,
 	      inputFormat: _react.PropTypes.string,
 	      defaultText: _react.PropTypes.string,
-	      mode: _react.PropTypes.oneOf([_ConstantsJs2["default"].MODE_DATE, _ConstantsJs2["default"].MODE_DATETIME, _ConstantsJs2["default"].MODE_TIME]),
+	      mode: _react.PropTypes.oneOf([_ConstantsJs2["default"].MODE_DATE, _ConstantsJs2["default"].MODE_MONTH, _ConstantsJs2["default"].MODE_DATETIME, _ConstantsJs2["default"].MODE_TIME]),
 	      minDate: _react.PropTypes.object,
 	      maxDate: _react.PropTypes.object,
 	      direction: _react.PropTypes.string,
@@ -1146,11 +1165,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _DateTimePickerDateJs2 = _interopRequireDefault(_DateTimePickerDateJs);
 
-	var _DateTimePickerTimeJs = __webpack_require__(49);
+	var _DateTimePickerTimeJs = __webpack_require__(50);
 
 	var _DateTimePickerTimeJs2 = _interopRequireDefault(_DateTimePickerTimeJs);
 
-	var _ConstantsJs = __webpack_require__(51);
+	var _ConstantsJs = __webpack_require__(48);
 
 	var _ConstantsJs2 = _interopRequireDefault(_ConstantsJs);
 
@@ -1177,6 +1196,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            maxDate: _this.props.maxDate,
 	            minDate: _this.props.minDate,
 	            selectedDate: _this.props.selectedDate,
+	            setSelectedMonth: _this.props.setSelectedMonth,
 	            setSelectedDate: _this.props.setSelectedDate,
 	            setViewMonth: _this.props.setViewMonth,
 	            setViewYear: _this.props.setViewYear,
@@ -1185,7 +1205,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            subtractMonth: _this.props.subtractMonth,
 	            subtractYear: _this.props.subtractYear,
 	            viewDate: _this.props.viewDate,
-	            viewMode: _this.props.viewMode
+	            viewMode: _this.props.viewMode,
+	            mode: _this.props.mode
 	          })
 	        );
 	      }
@@ -1251,8 +1272,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      selectedDate: _react.PropTypes.object.isRequired,
 	      showToday: _react.PropTypes.bool,
 	      viewMode: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.number]),
-	      mode: _react.PropTypes.oneOf([_ConstantsJs2["default"].MODE_DATE, _ConstantsJs2["default"].MODE_DATETIME, _ConstantsJs2["default"].MODE_TIME]),
+	      mode: _react.PropTypes.oneOf([_ConstantsJs2["default"].MODE_DATE, _ConstantsJs2["default"].MODE_MONTH, _ConstantsJs2["default"].MODE_DATETIME, _ConstantsJs2["default"].MODE_TIME]),
 	      daysOfWeekDisabled: _react.PropTypes.array,
+	      setSelectedMonth: _react.PropTypes.func.isRequired,
 	      setSelectedDate: _react.PropTypes.func.isRequired,
 	      subtractYear: _react.PropTypes.func.isRequired,
 	      addYear: _react.PropTypes.func.isRequired,
@@ -1316,9 +1338,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _DateTimePickerMonths2 = _interopRequireDefault(_DateTimePickerMonths);
 
-	var _DateTimePickerYears = __webpack_require__(48);
+	var _DateTimePickerYears = __webpack_require__(49);
 
 	var _DateTimePickerYears2 = _interopRequireDefault(_DateTimePickerYears);
+
+	var _ConstantsJs = __webpack_require__(48);
+
+	var _ConstantsJs2 = _interopRequireDefault(_ConstantsJs);
 
 	var DateTimePickerDate = (function (_Component) {
 	  _inherits(DateTimePickerDate, _Component);
@@ -1332,7 +1358,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      selectedDate: _react.PropTypes.object.isRequired,
 	      showToday: _react.PropTypes.bool,
 	      viewMode: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.number]),
+	      mode: _react.PropTypes.oneOf([_ConstantsJs2["default"].MODE_DATE, _ConstantsJs2["default"].MODE_MONTH, _ConstantsJs2["default"].MODE_DATETIME]),
 	      daysOfWeekDisabled: _react.PropTypes.array,
+	      setSelectedMonth: _react.PropTypes.func.isRequired,
 	      setSelectedDate: _react.PropTypes.func.isRequired,
 	      subtractYear: _react.PropTypes.func.isRequired,
 	      addYear: _react.PropTypes.func.isRequired,
@@ -1407,10 +1435,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return _react2["default"].createElement(_DateTimePickerMonths2["default"], {
 	          addYear: _this.props.addYear,
 	          selectedDate: _this.props.selectedDate,
+	          setSelectedMonth: _this.props.setSelectedMonth,
 	          setViewMonth: _this.setViewMonth,
 	          showYears: _this.showYears,
 	          subtractYear: _this.props.subtractYear,
-	          viewDate: _this.props.viewDate
+	          viewDate: _this.props.viewDate,
+	          mode: _this.props.mode
 	        });
 	      } else {
 	        return null;
@@ -1449,6 +1479,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    };
 	    this.state = viewModes[this.props.viewMode] || viewModes[_Object$keys(viewModes)[this.props.viewMode]] || viewModes.days;
+	    if (this.state.daysDisplayed && this.props.mode === _ConstantsJs2["default"].MODE_MONTH) {
+	      this.state = viewModes.months;
+	    }
 	  }
 
 	  _createClass(DateTimePickerDate, [{
@@ -1737,6 +1770,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _moment2 = _interopRequireDefault(_moment);
 
+	var _ConstantsJs = __webpack_require__(48);
+
+	var _ConstantsJs2 = _interopRequireDefault(_ConstantsJs);
+
 	var DateTimePickerMonths = (function (_Component) {
 	  _inherits(DateTimePickerMonths, _Component);
 
@@ -1749,6 +1786,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    this.renderMonths = function () {
 	      var classes, i, month, months, monthsShort;
+	      var onClick = _this.props.mode === _ConstantsJs2["default"].MODE_MONTH ? _this.props.setSelectedMonth : _this.props.setViewMonth;
 	      month = _this.props.selectedDate.month();
 	      monthsShort = _moment2["default"].monthsShort();
 	      i = 0;
@@ -1760,7 +1798,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        };
 	        months.push(_react2["default"].createElement(
 	          "span",
-	          { className: (0, _classnames2["default"])(classes), key: i, onClick: _this.props.setViewMonth },
+	          { className: (0, _classnames2["default"])(classes), key: i, onClick: onClick },
 	          monthsShort[i]
 	        ));
 	        i++;
@@ -1825,7 +1863,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      viewDate: _react.PropTypes.object.isRequired,
 	      selectedDate: _react.PropTypes.object.isRequired,
 	      showYears: _react.PropTypes.func.isRequired,
-	      setViewMonth: _react.PropTypes.func.isRequired
+	      setViewMonth: _react.PropTypes.func.isRequired,
+	      setSelectedMonth: _react.PropTypes.func.isRequired,
+	      mode: _react.PropTypes.oneOf([_ConstantsJs2["default"].MODE_DATE, _ConstantsJs2["default"].MODE_MONTH, _ConstantsJs2["default"].MODE_DATETIME])
 	    },
 	    enumerable: true
 	  }]);
@@ -1838,6 +1878,23 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 48 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = {
+	    MODE_DATE: "date",
+	    MODE_MONTH: "month",
+	    MODE_DATETIME: "datetime",
+	    MODE_TIME: "time",
+
+	    SIZE_SMALL: "sm",
+	    SIZE_MEDIUM: "md",
+	    SIZE_LARGE: "lg"
+	};
+
+/***/ },
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1969,7 +2026,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports["default"];
 
 /***/ },
-/* 49 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1994,7 +2051,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _DateTimePickerMinutes = __webpack_require__(50);
+	var _DateTimePickerMinutes = __webpack_require__(51);
 
 	var _DateTimePickerMinutes2 = _interopRequireDefault(_DateTimePickerMinutes);
 
@@ -2002,7 +2059,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _DateTimePickerHours2 = _interopRequireDefault(_DateTimePickerHours);
 
-	var _ConstantsJs = __webpack_require__(51);
+	var _ConstantsJs = __webpack_require__(48);
 
 	var _ConstantsJs2 = _interopRequireDefault(_ConstantsJs);
 
@@ -2198,7 +2255,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports["default"];
 
 /***/ },
-/* 50 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -2221,7 +2278,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _ConstantsJs = __webpack_require__(51);
+	var _ConstantsJs = __webpack_require__(48);
 
 	var _ConstantsJs2 = _interopRequireDefault(_ConstantsJs);
 
@@ -2358,22 +2415,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports["default"];
 
 /***/ },
-/* 51 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	module.exports = {
-	    MODE_DATE: "date",
-	    MODE_DATETIME: "datetime",
-	    MODE_TIME: "time",
-
-	    SIZE_SMALL: "sm",
-	    SIZE_MEDIUM: "md",
-	    SIZE_LARGE: "lg"
-	};
-
-/***/ },
 /* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -2397,7 +2438,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _ConstantsJs = __webpack_require__(51);
+	var _ConstantsJs = __webpack_require__(48);
 
 	var _ConstantsJs2 = _interopRequireDefault(_ConstantsJs);
 
