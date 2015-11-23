@@ -1,5 +1,5 @@
 {
-  "name": "react-bootstrap-datetimepicker",
+  "name": "@myob/react-bootstrap-datetimepicker",
   "version": "0.0.23",
   "description": "A bootstrap datetime picker component for React.js",
   "homepage": "http://dev.quri.com/react-bootstrap-datetimepicker/",
@@ -15,6 +15,9 @@
     "examples": "webpack-dev-server --config ./examples/webpack.config.js",
     "test": "jest",
     "lint": "eslint ."
+  },
+  "publishConfig": {
+    "registry": "http://npm.addevcloudservices.com.au"
   },
   "keywords": [
     "react",
