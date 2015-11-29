@@ -26,7 +26,8 @@ export default class DateTimePickerDate extends Component {
     addDecade: PropTypes.func.isRequired,
     subtractDecade: PropTypes.func.isRequired,
     minDate: PropTypes.object,
-    maxDate: PropTypes.object
+    maxDate: PropTypes.object,
+    calculatePosition: PropTypes.func
   }
 
   constructor(props) {
@@ -82,6 +83,19 @@ export default class DateTimePickerDate extends Component {
       monthsDisplayed: false,
       daysDisplayed: true
     });
+  }
+
+  componentWillUpdate = (nextProps, newState) => {
+    this.shouldCalculatePosition = false;
+    if(newState.monthsDisplayed !== this.state.monthsDisplayed || newState.yearsDisplayed !== this.state.yearsDisplayed || newState.daysDisplayed !== this.state.daysDisplayed ) {
+       this.shouldCalculatePosition = true;
+    }
+  }
+
+  componentDidUpdate = () => {
+    if(this.shouldCalculatePosition) {
+      this.props.calculatePosition();
+    }
   }
 
   renderDays = () => {
@@ -152,4 +166,3 @@ export default class DateTimePickerDate extends Component {
     );
   }
 }
-

@@ -305,14 +305,9 @@ export default class DateTimeField extends Component {
     });
   }
 
-  onClick = () => {
+  calculatePosition = () => {
     let classes, gBCR, offset, placePosition, scrollTop, styles, widgetOffsetHeight, clientHeight, height;
-    if (this.state.showPicker) {
-      return this.closePicker();
-    } else {
-      this.setState({
-        showPicker: true
-      });
+
       classes = {};
       gBCR = this.refs.dtpbutton.getBoundingClientRect();
 
@@ -351,6 +346,18 @@ export default class DateTimeField extends Component {
         widgetStyle: styles,
         widgetClasses: classes
       });
+
+  }
+
+  onClick = () => {
+    let classes, gBCR, offset, placePosition, scrollTop, styles, widgetOffsetHeight, clientHeight, height;
+    if (this.state.showPicker) {
+      return this.closePicker();
+    } else {
+      this.setState({
+        showPicker: true
+      });
+      this.calculatePosition();
     }
   }
 
@@ -428,6 +435,7 @@ export default class DateTimeField extends Component {
                   viewMode={this.props.viewMode}
                   widgetClasses={this.state.widgetClasses}
                   widgetStyle={this.state.widgetStyle}
+                  calculatePosition={this.calculatePosition}
             />
             <div className={classnames("input-group date " + this.size(), {"has-error": !this.state.isValid})} ref="datetimepicker">
               <input className="form-control" onChange={this.onChange} type="text" value={this.state.inputValue} {...this.props.inputProps} ref="inputDateTime" placeholder={this.props.defaultText}/>

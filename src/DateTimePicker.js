@@ -39,7 +39,8 @@ export default class DateTimePicker extends Component {
     togglePicker: PropTypes.func,
     setSelectedHour: PropTypes.func,
     setSelectedMinute: PropTypes.func,
-    setToday: PropTypes.func
+    setToday: PropTypes.func,
+    calculatePosition: PropTypes.func
   }
 
   renderDatePicker = () => {
@@ -65,9 +66,23 @@ export default class DateTimePicker extends Component {
               viewDate={this.props.viewDate}
               viewMode={this.props.viewMode}
               mode={this.props.mode}
+              calculatePosition = {this.props.calculatePosition}
         />
       </li>
       );
+    }
+  }
+
+  componentWillUpdate = (nextProps, newState) => {
+    this.shouldCalculatePosition = false;
+    if(nextProps.showTimePicker !== this.props.showTimePicker) {
+       this.shouldCalculatePosition = true;
+    }
+  }
+
+  componentDidUpdate = () => {
+    if(this.shouldCalculatePosition) {
+      this.props.calculatePosition();
     }
   }
 
