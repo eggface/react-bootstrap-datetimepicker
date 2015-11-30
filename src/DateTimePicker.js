@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import classnames from "classnames";
+import classnames from "classNames";
 import DateTimePickerDate from "./DateTimePickerDate.js";
 import DateTimePickerTime from "./DateTimePickerTime.js";
 import Constants from "./Constants.js";
@@ -124,8 +124,10 @@ export default class DateTimePicker extends Component {
   }
 
   render() {
+    const widgetClass = classnames('bootstrap-datetimepicker-widget', 'dropdown-menu', this.props.widgetClasses);
+
     return (
-      <div className={classnames('bootstrap-datetimepicker-widget', 'dropdown-menu', this.props.widgetClasses)} style={this.props.widgetStyle}>
+      <div className={widgetClass} style={this.props.widgetStyle}>
 
         <ul className="list-unstyled">
 

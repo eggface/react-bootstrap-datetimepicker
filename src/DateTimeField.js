@@ -305,10 +305,16 @@ export default class DateTimeField extends Component {
     });
   }
 
-  calculatePosition = () => {
+  calculatePosition = (options) => {
     let classes, gBCR, offset, placePosition, scrollTop, styles, widgetOffsetHeight, clientHeight, height;
 
       classes = {};
+      if(options) {
+        classes["months"] = options.monthsDisplayed;
+        classes["years"] = options.yearsDisplayed;
+        classes["days"] = options.daysDisplayed;
+        classes["time"] = options.timeDisplayed;
+      }
       gBCR = this.refs.dtpbutton.getBoundingClientRect();
 
       offset = {
@@ -328,12 +334,10 @@ export default class DateTimeField extends Component {
         offset.top = -widgetOffsetHeight - 2;
         classes.top = true;
         classes.bottom = false;
-        classes["pull-right"] = true;
       } else {
         offset.top = 35;
         classes.top = false;
         classes.bottom = true;
-        classes["pull-right"] = true;
       }
       styles = {
         display: "block",
@@ -350,14 +354,20 @@ export default class DateTimeField extends Component {
   }
 
   onClick = () => {
-    let classes, gBCR, offset, placePosition, scrollTop, styles, widgetOffsetHeight, clientHeight, height;
+    let displayOptions = {};
+
     if (this.state.showPicker) {
       return this.closePicker();
     } else {
       this.setState({
         showPicker: true
       });
-      this.calculatePosition();
+      displayOptions.yearsDisplayed = (this.props.mode === 'year');
+      displayOptions.monthsDisplayed = (this.props.mode === 'month');
+      displayOptions.daysDisplayed = (this.props.mode === 'date');
+      displayOptions.timeDisplayed = (this.props.mode === 'time');
+
+      this.calculatePosition(displayOptions);
     }
   }
 

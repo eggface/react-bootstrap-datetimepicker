@@ -94,7 +94,7 @@ export default class DateTimePickerDate extends Component {
 
   componentDidUpdate = () => {
     if(this.shouldCalculatePosition) {
-      this.props.calculatePosition();
+      this.props.calculatePosition({monthsDisplayed: this.state.monthsDisplayed, yearsDisplayed: this.state.yearsDisplayed, daysDisplayed: this.state.daysDisplayed});
     }
   }
 
