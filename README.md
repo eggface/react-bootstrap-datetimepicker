@@ -8,7 +8,7 @@ Usage
 
 Installation :
 ```
-npm install react-bootstrap-datetimepicker
+npm install MYOB-Technology/react-bootstrap-datetimepicker
 ```
 
 Then
