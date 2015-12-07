@@ -6,14 +6,16 @@ This project is a port of https://github.com/Eonasdan/bootstrap-datetimepicker f
 Usage
 ===============================
 
-Installation :
-```
-npm install MYOB-Technology/react-bootstrap-datetimepicker
-```
+Installation : `npm install --save @myob/react-bootstrap-datetimepicker`
 
 Then
+
 ```javascript
+//ES5
 var DateTimeField = require('react-bootstrap-datetimepicker');
+
+//ES6
+import DateTimeField from "react-bootstrap-datetimepicker"
 
 ...
 
@@ -35,6 +37,7 @@ DateTimeField
 | **format**   | string  | "x"     | Defines the format moment.js should use to parse and output the date to onChange |
 | **inputFormat** | string | "MM/DD/YY h:mm A" | Defines the way the date is represented in the HTML input. It must be a format understandable by moment.js |
 | **onChange** | function | x => console.log(x) | Callback trigger when the date changes. `x` is the new datetime value. |
+| **onBlur** | function | x => console.log(x) | Callback trigger when the date field blurs. `x` is the new datetime value. |
 | **showToday** | boolean | true | Highlights today's date |
 | **size** | string | "md" | Changes the size of the date picker input field. Sizes: "sm", "md", "lg" |
 | **daysOfWeekDisabled** | array of integer | [] | Disables clicking on some days. Goes from 0 (Sunday) to 6 (Saturday). |
