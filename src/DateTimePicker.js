@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import classnames from "classNames";
+import classNames from "classnames";
 import DateTimePickerDate from "./DateTimePickerDate.js";
 import DateTimePickerTime from "./DateTimePickerTime.js";
 import Constants from "./Constants.js";
@@ -111,7 +111,7 @@ export default class DateTimePicker extends Component {
       return this.props.mode === Constants.MODE_DATETIME ?
           (
               <li>
-                <span className="btn picker-switch" onClick={this.props.togglePicker} style={{width: "100%"}} ><span className={classnames("glyphicon", this.props.showTimePicker ? "glyphicon-calendar" : "glyphicon-time")} /></span>
+                <span className="btn picker-switch" onClick={this.props.togglePicker} style={{width: "100%"}} ><span className={classNames("glyphicon", this.props.showTimePicker ? "glyphicon-calendar" : "glyphicon-time")} /></span>
               </li>
           ) :
           this.props.mode === Constants.MODE_DATE ?
@@ -124,7 +124,7 @@ export default class DateTimePicker extends Component {
   }
 
   render() {
-    const widgetClass = classnames('bootstrap-datetimepicker-widget', 'dropdown-menu', this.props.widgetClasses);
+    const widgetClass = classNames('bootstrap-datetimepicker-widget', 'dropdown-menu', this.props.widgetClasses);
 
     return (
       <div className={widgetClass} style={this.props.widgetStyle}>

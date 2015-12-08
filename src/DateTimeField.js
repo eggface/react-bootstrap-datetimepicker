@@ -86,7 +86,7 @@ export default class DateTimeField extends Component {
     return this.setState(state);
   }
 
-  onChange = (event) => {
+  formatValueForEvent(eventName, event) {
     const value = event.target == null ? event : event.target.value;
 
     this.setIsValid(this.checkIsValid(value));
@@ -100,10 +100,18 @@ export default class DateTimeField extends Component {
     return this.setState({
       inputValue: value
     }, function() {
-      return this.props.onChange(moment(this.state.inputValue, this.state.inputFormat, true).format(this.props.format), value);
+      return this.props[eventName](moment(this.state.inputValue, this.state.inputFormat, true).format(this.props.format), value);
     });
 
   }
+
+  onChange = event => {
+    this.formatValueForEvent('onChange', event);
+  };
+
+  onBlur = event => {
+    this.formatValueForEvent('onBlur', event);
+  };
 
   checkIsValid = (value) => {
     return moment(value, this.state.inputFormat, true).isValid() || value === this.props.defaultText || value === '';
@@ -406,7 +414,7 @@ export default class DateTimeField extends Component {
     } else {
       return <span />;
     }
-  }
+  };
 
   render() {
     return (
@@ -448,7 +456,7 @@ export default class DateTimeField extends Component {
                   calculatePosition={this.calculatePosition}
             />
             <div className={classnames("input-group date " + this.size(), {"has-error": !this.state.isValid})} ref="datetimepicker">
-              <input className="form-control" onChange={this.onChange} type="text" value={this.state.inputValue} {...this.props.inputProps} ref="inputDateTime" placeholder={this.props.defaultText}/>
+              <input className="form-control" onChange={this.onChange} onBlur={this.onBlur} type="text" value={this.state.inputValue} {...this.props.inputProps} ref="inputDateTime" placeholder={this.props.defaultText}/>
               <span className="input-group-addon" onBlur={this.onBlur} onClick={this.onClick} ref="dtpbutton">
                 <span className={classnames("glyphicon", this.state.buttonIcon)} />
               </span>
