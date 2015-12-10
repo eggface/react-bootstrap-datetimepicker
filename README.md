@@ -43,6 +43,7 @@ DateTimeField
 | **daysOfWeekDisabled** | array of integer | [] | Disables clicking on some days. Goes from 0 (Sunday) to 6 (Saturday). |
 | **viewMode** | string or number | 'days' | The default view to display when the picker is shown. ('years', 'months', 'days') |
 | **inputProps** | object | undefined | Defines additional attributes for the input element of the component. |
+| **inputRef** | string or function | inputDateTime | Allows a custom reference to be passed to the input field. |
 | **minDate** | moment | undefined | The earliest date allowed for entry in the calendar view. |
 | **maxDate** | moment | undefined | The latest date allowed for entry in the calendar view. |
 | **mode** | string | undefined | Allows to selectively display only the time picker ('time'), date picker ('date'), or month picker ('month') |

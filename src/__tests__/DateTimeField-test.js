@@ -4,24 +4,30 @@ import TestUtils from "react-addons-test-utils";
 jest.dontMock("moment");
 jest.dontMock("../DateTimeField.js");
 
-describe("DateTimeField", function() {
+function shallowRender(component) {
+  const shallowRenderer = TestUtils.createRenderer();
+  shallowRenderer.render(component);
+  return shallowRenderer.getRenderOutput();
+};
+
+describe("DateTimeField", function () {
   const moment = require("moment");
   const DateTimeField = require("../DateTimeField.js");
   const happyDate = moment("1990-06-05 07:30");
   let createParent, TestParent;
 
 
-  describe("By default", function() {
+  describe("By default", function () {
 
-   it("shows the right date for a given dateTime and inputFormat", function() {
-     const component = TestUtils.renderIntoDocument(<DateTimeField dateTime={happyDate.format("x")} />);
-     const input = TestUtils.findRenderedDOMComponentWithTag(component, "input");
-     expect(input.value).toBe("06/05/90 7:30 AM");
+    it("shows the right date for a given dateTime and inputFormat", function () {
+      const component = TestUtils.renderIntoDocument(<DateTimeField dateTime={happyDate.format("x")}/>);
+      const input = TestUtils.findRenderedDOMComponentWithTag(component, "input");
+      expect(input.value).toBe("06/05/90 7:30 AM");
     });
 
   });
 
-  describe("When changing props", function() {
+  describe("When changing props", function () {
 
     beforeEach(() => {
       TestParent = React.createFactory(React.createClass({
@@ -39,23 +45,23 @@ describe("DateTimeField", function() {
       createParent = (initalState) => TestUtils.renderIntoDocument(TestParent(initalState)); // eslint-disable-line
     });
 
-    it("changes the displayed date when dateTime changes", function() {
+    it("changes the displayed date when dateTime changes", function () {
       const Parent = createParent();
       const input = TestUtils.findRenderedDOMComponentWithTag(Parent, "input");
       expect(input.value).toBe("06/05/90 7:30 AM");
       Parent.setState({dateTime: moment("1981-06-04 05:45").format("x")});
       expect(input.value).toBe("06/04/81 5:45 AM");
-     });
+    });
 
-    it("changes the displayed format when inputFormat changes", function() {
+    it("changes the displayed format when inputFormat changes", function () {
       const Parent = createParent();
       const input = TestUtils.findRenderedDOMComponentWithTag(Parent, "input");
       expect(input.value).toBe("06/05/90 7:30 AM");
       Parent.setState({inputFormat: "x"});
       expect(input.value).toBe(happyDate.format("x"));
-     });
+    });
 
-    it("doesn't change the defaultText if dateTime didn't change", function() {
+    it("doesn't change the defaultText if dateTime didn't change", function () {
       const Parent = createParent({defaultText: "Pick a date"});
       const input = TestUtils.findRenderedDOMComponentWithTag(Parent, "input");
       expect(input.getAttribute('placeholder')).toBe("Pick a date");
@@ -71,7 +77,7 @@ describe("DateTimeField", function() {
       TestUtils.Simulate.change(input);
 
       expect(onChangeMock.mock.calls.length).toBe(1);
-    })
+    });
 
     it('should call the onBlur callback', function () {
       const onBlurMock = jest.genMockFunction();
@@ -82,7 +88,19 @@ describe("DateTimeField", function() {
       TestUtils.Simulate.blur(input);
 
       expect(onBlurMock.mock.calls.length).toBe(1);
-    })
+    });
+
+    it('should use the default ref on the input field', function () {
+      const component = shallowRender(<DateTimeField />);
+      let children = component.props.children[2];
+      expect(children.props.children[0].ref).toBe('inputDateTime');
+    });
+
+    it('should use the provided ref on the input field', function () {
+      const component = shallowRender(<DateTimeField inputRef='foo' />);
+      let children = component.props.children[2];
+      expect(children.props.children[0].ref).toBe('foo');
+    });
 
   });
 

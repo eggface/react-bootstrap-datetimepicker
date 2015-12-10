@@ -12,6 +12,7 @@ export default class DateTimeField extends Component {
     showToday: true,
     viewMode: "days",
     daysOfWeekDisabled: [],
+    inputRef: 'inputDateTime',
     size: Constants.SIZE_MEDIUM,
     mode: Constants.MODE_DATETIME,
     onChange: (x) => {
@@ -456,7 +457,7 @@ export default class DateTimeField extends Component {
                   calculatePosition={this.calculatePosition}
             />
             <div className={classnames("input-group date " + this.size(), {"has-error": !this.state.isValid})} ref="datetimepicker">
-              <input className="form-control" onChange={this.onChange} onBlur={this.onBlur} type="text" value={this.state.inputValue} {...this.props.inputProps} ref="inputDateTime" placeholder={this.props.defaultText}/>
+              <input className="form-control" onChange={this.onChange} onBlur={this.onBlur} type="text" value={this.state.inputValue} {...this.props.inputProps} ref={this.props.inputRef} placeholder={this.props.defaultText}/>
               <span className="input-group-addon" onBlur={this.onBlur} onClick={this.onClick} ref="dtpbutton">
                 <span className={classnames("glyphicon", this.state.buttonIcon)} />
               </span>
