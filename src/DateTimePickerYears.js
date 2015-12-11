@@ -7,11 +7,15 @@ export default class DateTimePickerYears extends Component {
     addDecade: PropTypes.func.isRequired,
     viewDate: PropTypes.object.isRequired,
     selectedDate: PropTypes.object.isRequired,
-    setViewYear: PropTypes.func.isRequired
+    setViewYear: PropTypes.func.isRequired,
+    minDate: PropTypes.object,
+    maxDate: PropTypes.object
   }
 
   renderYears = () => {
-    var classes, i, year, years;
+    var classes, i, year, years, minDate, maxDate;
+    minDate = this.props.minDate ? this.props.minDate.clone() : this.props.minDate;
+    maxDate = this.props.maxDate ? this.props.maxDate.clone() : this.props.maxDate;
     years = [];
     year = parseInt(this.props.viewDate.year() / 10, 10) * 10;
     year--;
@@ -22,7 +26,10 @@ export default class DateTimePickerYears extends Component {
         old: i === -1 | i === 10,
         active: this.props.selectedDate.year() === year
       };
-      years.push(<span className={classnames(classes)} key={year}onClick={this.props.setViewYear}>{year}</span>);
+      if ((minDate && year < minDate.year()) || (maxDate && year > maxDate.year())) {
+        classes.disabled = true;
+      }
+      years.push(<span className={classnames(classes)} key={year} onClick={this.props.setViewYear}>{year}</span>);
       year++;
       i++;
     }
