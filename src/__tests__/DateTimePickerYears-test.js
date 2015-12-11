@@ -1,8 +1,8 @@
 import React from "react";
 import TestUtils from "react-addons-test-utils";
 
-jest.dontMock("../DateTimePickerYears.js");
 jest.dontMock("moment");
+jest.dontMock("../DateTimePickerYears.js");
 
 describe("DateTimePickerYears", function() {
   const moment = require("moment");
@@ -19,6 +19,8 @@ describe("DateTimePickerYears", function() {
         selectedDate={moment()}
         setViewYear={setViewYearMock}
         subtractDecade={subtractDecadeMock}
+        minDate={moment().subtract(1, "years")}
+        maxDate={moment().add(1, "years")}
         viewDate={moment()}
        />
     );
@@ -80,6 +82,18 @@ describe("DateTimePickerYears", function() {
       const active = TestUtils.scryRenderedDOMComponentsWithClass(years, "active");
       expect(active.length).toBe(0);
     });
-  });
 
+    it("disable years outside the minDate / maxDate range", function() {
+      const active = TestUtils.findRenderedDOMComponentWithClass(years, "active");
+      const yearList = TestUtils.scryRenderedDOMComponentsWithClass(years, "year");
+      const currentYear = +active.textContent;
+      let year;
+
+      yearList.forEach(item => {
+        year = +item.textContent;
+        if (year < currentYear -1 || year > currentYear + 1) expect(item.className).toMatch(/disabled/);
+        else expect(item.className).not.toMatch(/disabled/);
+      });
+    });
+  });
 });
