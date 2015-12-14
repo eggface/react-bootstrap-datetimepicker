@@ -306,7 +306,6 @@ export default class DateTimeField extends Component {
     }, function() {
       this.closePicker();
       this.props.onChange(today);
-      console.log(this.state.selectedDate)
       return this.setState({
         inputValue: this.state.selectedDate.format(this.resolvePropsInputFormat())
       });

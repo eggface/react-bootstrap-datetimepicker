@@ -18,25 +18,21 @@ export default class DateTimePickerMonths extends Component {
   }
 
   renderMonths = () => {
-    var classes, i, month, months, monthsShort, minDate, maxDate, currentMonth;
+    var classes, month, months, monthsShort, minDate, maxDate, currentMonth;
     const onClick = this.props.mode === Constants.MODE_MONTH ? this.props.setSelectedMonth : this.props.setViewMonth;
     month = this.props.selectedDate.month();
     monthsShort = moment.monthsShort();
-    minDate = this.props.minDate ? this.props.minDate.clone().subtract(1, "months") : this.props.minDate;
-    maxDate = this.props.maxDate ? this.props.maxDate.clone() : this.props.maxDate;
-    i = 0;
+    minDate = this.props.minDate ? this.props.minDate.clone() : this.props.minDate;
+    maxDate = this.props.maxDate ? this.props.maxDate.clone().add(1, "months") : this.props.maxDate;
     months = [];
-    currentMonth = moment([this.props.viewDate.year()]);
-    while (i < 12) {
+    currentMonth = moment([this.props.viewDate.year(), 1, 1]);
+    for (let i = 0; i < 12; i++) {
       classes = {
         month: true,
-        "active": i === month && this.props.viewDate.year() === this.props.selectedDate.year()
+        "active": i === month && this.props.viewDate.year() === this.props.selectedDate.year(),
+        disabled: (minDate && currentMonth.isBefore(minDate)) || (maxDate && currentMonth.isAfter(maxDate))
       };
-      if ((minDate && currentMonth.isBefore(minDate)) || (maxDate && currentMonth.isAfter(maxDate))) {
-        classes.disabled = true;
-      }
       months.push(<span className={classnames(classes)} key={i} onClick={onClick}>{monthsShort[i]}</span>);
-      i++;
       currentMonth.add(1, "months");
     }
     return months;
