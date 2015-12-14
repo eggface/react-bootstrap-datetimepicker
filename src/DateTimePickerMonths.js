@@ -25,7 +25,7 @@ export default class DateTimePickerMonths extends Component {
     minDate = this.props.minDate ? this.props.minDate.clone() : this.props.minDate;
     maxDate = this.props.maxDate ? this.props.maxDate.clone().add(1, "months") : this.props.maxDate;
     months = [];
-    currentMonth = moment([this.props.viewDate.year(), 1, 1]);
+    currentMonth = moment([this.props.viewDate.year(), 0, 1]);
     for (let i = 0; i < 12; i++) {
       classes = {
         month: true,
