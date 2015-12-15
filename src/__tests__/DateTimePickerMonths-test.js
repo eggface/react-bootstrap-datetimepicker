@@ -23,6 +23,8 @@ describe("DateTimePickerMonths", function() {
         showYears={showYearsMock}
         subtractYear={subtractYearMock}
         viewDate={moment()}
+        minDate={moment().subtract(1, "months")}
+        maxDate={moment().add(1, "months")}
         setSelectedMonth={setSelectedMonthMock}
         mode={"date"}
        />
@@ -108,6 +110,19 @@ describe("DateTimePickerMonths", function() {
       const active = TestUtils.scryRenderedDOMComponentsWithClass(months, "active");
       expect(active.length).toBe(0);
     });
-  });
 
+    it("disable months outside the minDate / maxDate range", function() {
+      const active = TestUtils.findRenderedDOMComponentWithClass(months, "active");
+      const monthList = TestUtils.scryRenderedDOMComponentsWithClass(months, "month");
+      const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      const currentMonth = labels.indexOf(active.textContent);
+      let month;
+
+      monthList.forEach(item => {
+        month = labels.indexOf(item.textContent);
+        if (month < currentMonth -1 || month > currentMonth + 1) expect(item.className).toMatch(/disabled/);
+        else expect(item.className).not.toMatch(/disabled/);
+      });
+    });
+  });
 });

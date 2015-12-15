@@ -133,6 +133,28 @@ class Basic extends Component {
                 <pre> {'<DateTimeField mode="month" />'} </pre>
               </div>
             </div>
+            <div className="row">
+              <div className="col-xs-12">
+                Month picker with min and max dates
+                <DateTimeField
+                  mode="month"
+                  maxDate={moment().add(3, "months")}
+                  minDate={moment().subtract(3, "months")}
+                />
+                <pre> {'<DateTimeField mode="month" maxDate={moment().add(3, "months")} minDate={moment().subtract(3, "months")/>'} </pre>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-xs-12">
+                ViewMode set to years with min and max dates
+                <DateTimeField
+                  maxDate={moment().add(1, "year")}
+                  minDate={moment().subtract(1, "year")}
+                  viewMode='years'
+                />
+                <pre> {'<DateTimeField viewMode="years" maxDate={moment().add(1, "year")} minDate={moment().subtract(1, "year")}/>'} </pre>
+              </div>
+            </div>
           </div>
       );
    }
