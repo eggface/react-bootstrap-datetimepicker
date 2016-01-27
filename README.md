@@ -49,6 +49,17 @@ DateTimeField
 | **mode** | string | undefined | Allows to selectively display only the time picker ('time'), date picker ('date'), or month picker ('month') |
 | **defaultText** | string | {dateTime} | Sets the initial value. Could be an empty string, or helper text. |
 
+Release Process
+========
+Once your pull request has been merged to master:
+1. Make sure you have the latest changes by running `git pull` on the master branch.
+2. *(Optional)* Check that your changes are reflected in the dist/react-bootstrap-datetimepicker.js file by running `npm run build-npm` and checking the file manually from the dist folder.
+3. When you're happy with your changes, run on your console:
+
+	`npm run` + type of release (`patch-release`,  `minor-release`, `major-release`)
+    
+    For example: `npm run patch-release` 
+
 Update Warning
 ===============================
 Starting from 0.0.6, the 3 github repositories `react-bootstrap-datetimepicker`, `react-bootstrap-datetimepicker-npm` and `react-bootstrap-datetimepicker-bower` are merged in a single one. The build process changed but the API is the same.
