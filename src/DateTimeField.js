@@ -18,10 +18,32 @@ export default class DateTimeField extends Component {
     onChange: (x) => {
       console.log(x);
     }
+  };
+
+  constructor(props){
+    super(props);
+
+    var dateTime = props.dateTime ? props.dateTime : moment().format(props.format);
+    this.state = {
+      showDatePicker: props.mode !== Constants.MODE_TIME,
+      showTimePicker: props.mode === Constants.MODE_TIME,
+      inputDisplayFormat: this.resolvePropsInputDisplayFormat(),
+      inputFormat: this.resolvePropsInputFormat(),
+      buttonIcon: props.mode === Constants.MODE_TIME ? "glyphicon-time" : "glyphicon-calendar",
+      widgetStyle: {
+        display: "block",
+        position: "absolute",
+        left: -9999,
+        zIndex: "9999 !important"
+      },
+      viewDate: moment(dateTime, props.format, true).startOf("month"),
+      selectedDate: moment(dateTime, props.format, true),
+      inputValue: (typeof props.defaultText !== "undefined") ? undefined : moment(dateTime, props.format, true).format(this.resolvePropsInputDisplayFormat()),
+      isValid: true
+    };
   }
 
-  resolvePropsInputFormat = () => {
-    if (this.props.inputFormat) { return this.props.inputFormat; }
+  getDefaultDateFormat = () => {
     switch (this.props.mode) {
       case Constants.MODE_TIME:
         return "h:mm A";
@@ -34,6 +56,24 @@ export default class DateTimeField extends Component {
     }
   }
 
+  resolvePropsInputDisplayFormat = (props = this.props) => {
+    if (props.inputDisplayFormat) {
+     return props.inputDisplayFormat;
+    } else if (props.inputFormat && (typeof props.inputFormat === 'string')) {
+     return props.inputFormat;
+    } else if (props.inputFormat && Array.isArray(props.inputFormat)){
+      return (props.inputFormat)[0];
+    }
+    return this.getDefaultDateFormat();
+  }
+
+  resolvePropsInputFormat = () => {
+    if (this.props.inputFormat) {
+      return this.props.inputFormat;
+    }
+    return this.getDefaultDateFormat();
+  }
+
   static propTypes = {
     dateTime: PropTypes.oneOfType([
       PropTypes.string,
@@ -42,7 +82,8 @@ export default class DateTimeField extends Component {
     onChange: PropTypes.func,
     format: PropTypes.string,
     inputProps: PropTypes.object,
-    inputFormat: PropTypes.string,
+    inputFormat: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
+    inputDisplayFormat: PropTypes.string,
     defaultText: PropTypes.string,
     mode: PropTypes.oneOf([Constants.MODE_DATE, Constants.MODE_MONTH, Constants.MODE_DATETIME, Constants.MODE_TIME]),
     minDate: PropTypes.object,
@@ -55,40 +96,21 @@ export default class DateTimeField extends Component {
     isValid: PropTypes.bool
   }
 
-  state = {
-      showDatePicker: this.props.mode !== Constants.MODE_TIME,
-      showTimePicker: this.props.mode === Constants.MODE_TIME,
-      inputFormat: this.resolvePropsInputFormat(),
-      buttonIcon: this.props.mode === Constants.MODE_TIME ? "glyphicon-time" : "glyphicon-calendar",
-      widgetStyle: {
-        display: "block",
-        position: "absolute",
-        left: -9999,
-        zIndex: "9999 !important"
-      },
-      viewDate: moment(this.props.dateTime, this.props.format, true).startOf("month"),
-      selectedDate: moment(this.props.dateTime, this.props.format, true),
-      inputValue: typeof this.props.defaultText !== "undefined" ? undefined : moment(this.props.dateTime, this.props.format, true).format(this.resolvePropsInputFormat()),
-      isValid: true
-  }
-
   componentWillReceiveProps = (nextProps) => {
-    let state = {};
-    if (nextProps.inputFormat !== this.props.inputFormat) {
-        state.inputFormat = nextProps.inputFormat;
-        state.inputValue = moment(nextProps.dateTime, nextProps.format, true).format(nextProps.inputFormat);
-    }
 
-    if (nextProps.dateTime !== this.props.dateTime && moment(nextProps.dateTime, nextProps.format, true).isValid()) {
+    let state = {};
+    state.inputDisplayFormat = this.resolvePropsInputDisplayFormat(nextProps);
+
+    if (moment(nextProps.dateTime, nextProps.format, true).isValid()) {
       state.viewDate = moment(nextProps.dateTime, nextProps.format, true).startOf("month");
       state.selectedDate = moment(nextProps.dateTime, nextProps.format, true);
-      state.inputValue = moment(nextProps.dateTime, nextProps.format, true).format(nextProps.inputFormat ? nextProps.inputFormat : this.state.inputFormat);
+      state.inputValue = moment(nextProps.dateTime, nextProps.format, true).format(state.inputDisplayFormat);
     }
     return this.setState(state);
   }
 
   formatValueForEvent(eventName, event) {
-    const value = event.target == null ? event : event.target.value;
+    let value = event.target == null ? event : event.target.value;
 
     this.setIsValid(this.checkIsValid(value));
     if (moment(value, this.state.inputFormat, true).isValid()) {
@@ -96,6 +118,10 @@ export default class DateTimeField extends Component {
         selectedDate: moment(value, this.state.inputFormat, true),
         viewDate: moment(value, this.state.inputFormat, true).startOf("month")
       });
+    }
+
+    if (moment(value, this.state.inputFormat, true).isValid()) {
+      value = moment(value, this.state.inputFormat, true).format(this.state.inputDisplayFormat);
     }
 
     return this.setState({
@@ -139,7 +165,7 @@ export default class DateTimeField extends Component {
         this.closePicker();
         this.props.onChange(this.state.selectedDate.format(this.props.format));
         return this.setState({
-          inputValue: this.state.selectedDate.format(this.state.inputFormat)
+          inputValue: this.state.selectedDate.format(this.state.inputDisplayFormat)
         });
       });
     }
@@ -160,7 +186,7 @@ export default class DateTimeField extends Component {
         this.closePicker();
         this.props.onChange(this.state.selectedDate.format(this.props.format));
         return this.setState({
-          inputValue: this.state.selectedDate.format(this.state.inputFormat)
+          inputValue: this.state.selectedDate.format(this.state.inputDisplayFormat)
         });
       });
     }
@@ -174,7 +200,7 @@ export default class DateTimeField extends Component {
       this.closePicker();
       this.props.onChange(this.state.selectedDate.format(this.props.format));
       return this.setState({
-        inputValue: this.state.selectedDate.format(this.state.inputFormat)
+        inputValue: this.state.selectedDate.format(this.state.inputDisplayFormat)
       });
     });
   }
@@ -187,7 +213,7 @@ export default class DateTimeField extends Component {
       this.closePicker();
       this.props.onChange(this.state.selectedDate.format(this.props.format));
       return this.setState({
-        inputValue: this.state.selectedDate.format(this.state.inputFormat)
+        inputValue: this.state.selectedDate.format(this.state.inputDisplayFormat)
       });
     });
   }
@@ -210,7 +236,7 @@ export default class DateTimeField extends Component {
     }, function() {
       this.props.onChange(this.state.selectedDate.format(this.props.format));
       return this.setState({
-        inputValue: this.state.selectedDate.format(this.resolvePropsInputFormat())
+        inputValue: this.state.selectedDate.format(this.resolvePropsInputDisplayFormat())
       });
     });
   }
@@ -221,7 +247,7 @@ export default class DateTimeField extends Component {
     }, function() {
       this.props.onChange(this.state.selectedDate.format(this.props.format));
       return this.setState({
-        inputValue: this.state.selectedDate.format(this.resolvePropsInputFormat())
+        inputValue: this.state.selectedDate.format(this.resolvePropsInputDisplayFormat())
       });
     });
   }
@@ -250,7 +276,7 @@ export default class DateTimeField extends Component {
     }, () => {
       this.props.onChange(this.state.selectedDate.format(this.props.format));
       return this.setState({
-        inputValue: this.state.selectedDate.format(this.resolvePropsInputFormat())
+        inputValue: this.state.selectedDate.format(this.resolvePropsInputDisplayFormat())
       });
     });
   }
@@ -261,7 +287,7 @@ export default class DateTimeField extends Component {
     }, () => {
       this.props.onChange(this.state.selectedDate.format(this.props.format));
       return this.setState({
-        inputValue: this.state.selectedDate.format(this.resolvePropsInputFormat())
+        inputValue: this.state.selectedDate.format(this.resolvePropsInputDisplayFormat())
       });
     });
   }
@@ -286,9 +312,9 @@ export default class DateTimeField extends Component {
 
   togglePeriod = () => {
     if (this.state.selectedDate.hour() > 12) {
-      return this.onChange(this.state.selectedDate.clone().subtract(12, "hours").format(this.state.inputFormat));
+      return this.onChange(this.state.selectedDate.clone().subtract(12, "hours").format(this.state.inputDisplayFormat));
     } else {
-      return this.onChange(this.state.selectedDate.clone().add(12, "hours").format(this.state.inputFormat));
+      return this.onChange(this.state.selectedDate.clone().add(12, "hours").format(this.state.inputDisplayFormat));
     }
   }
 
@@ -308,7 +334,7 @@ export default class DateTimeField extends Component {
       this.closePicker();
       this.props.onChange(today);
       return this.setState({
-        inputValue: this.state.selectedDate.format(this.resolvePropsInputFormat())
+        inputValue: this.state.selectedDate.format(this.resolvePropsInputDisplayFormat())
       });
     });
   }

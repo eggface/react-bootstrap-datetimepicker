@@ -16,7 +16,6 @@ describe("DateTimeField", function () {
   const happyDate = moment("1990-06-05 07:30");
   let createParent, TestParent;
 
-
   describe("By default", function () {
 
     it("shows the right date for a given dateTime and inputFormat", function () {
@@ -53,12 +52,37 @@ describe("DateTimeField", function () {
       expect(input.value).toBe("06/04/81 5:45 AM");
     });
 
-    it("changes the displayed format when inputFormat changes", function () {
+    it("changes the displayed format when string type inputFormat changes, with no inputDisplayFormat", function () {
       const Parent = createParent();
       const input = TestUtils.findRenderedDOMComponentWithTag(Parent, "input");
       expect(input.value).toBe("06/05/90 7:30 AM");
       Parent.setState({inputFormat: "x"});
       expect(input.value).toBe(happyDate.format("x"));
+    });
+
+    it("changes the displayed format when array inputFormat changes, with no inputDisplayFormat", function () {
+      const Parent = createParent();
+      const input = TestUtils.findRenderedDOMComponentWithTag(Parent, "input");
+      expect(input.value).toBe("06/05/90 7:30 AM");
+      Parent.setState({dateTime: moment("1981-06-04 05:45").format("x"), inputFormat: ["MM YYYY", "M YYYY"]});
+      // inputDisplayFormat is set based on inputFormat, which is an array and first one is chosen
+      expect(input.value).toBe("06 1981");
+    });
+
+    it("changes the displayed format when string inputDisplayFormat changes, with no inputFormat", function () {
+      const Parent = createParent();
+      const input = TestUtils.findRenderedDOMComponentWithTag(Parent, "input");
+      expect(input.value).toBe("06/05/90 7:30 AM");
+      Parent.setState({inputDisplayFormat: "DD MMM YYYY H:mm"});
+      expect(input.value).toBe("05 Jun 1990 7:30");
+    });
+
+    it("changes the displayed format when inputDisplayFormat changes, with inputFormat", function () {
+      const Parent = createParent();
+      const input = TestUtils.findRenderedDOMComponentWithTag(Parent, "input");
+      expect(input.value).toBe("06/05/90 7:30 AM");
+      Parent.setState({inputDisplayFormat: "DD MMM YYYY H:mm", inputFormat: "x"});
+      expect(input.value).toBe("05 Jun 1990 7:30");
     });
 
     it("doesn't change the defaultText if dateTime didn't change", function () {
