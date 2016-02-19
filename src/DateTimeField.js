@@ -157,6 +157,7 @@ export default class DateTimeField extends Component {
   setSelectedMonth = (e) => {
     const { target } = e;
     if (target.className && !target.className.match(/disabled/g)) {
+      this.setIsValid(true);
       return this.setState({
         selectedDate: moment(this.state.viewDate.clone().toDate())
           .month(e.target.innerHTML).date(1)
