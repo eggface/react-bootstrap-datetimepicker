@@ -121,11 +121,96 @@ describe("DateTimeField", function () {
     });
 
     it('should use the provided ref on the input field', function () {
-      const component = shallowRender(<DateTimeField inputRef='foo' />);
+      const component = shallowRender(<DateTimeField inputRef='foo'/>);
       let children = component.props.children[2];
       expect(children.props.children[0].ref).toBe('foo');
     });
-
   });
 
+  describe('formatValueForEvent', () => {
+    let component, setStateMock, yearDigitsMock, inputFormat;
+    beforeEach(() => {
+      inputFormat = ['DD/MM/YYYY', 'DD/MM/YY'];
+      component = TestUtils.renderIntoDocument(<DateTimeField dateTime={happyDate.format("x")}
+                                                              inputFormat={inputFormat}/>);
+      setStateMock = jest.genMockFunction();
+      yearDigitsMock = jest.genMockFunction();
+      component.setState = setStateMock;
+      component.setIsValid = jest.genMockFunction();
+    });
+
+    describe('on change', () => {
+      it('calls setState twice when the year is 4 digits and is valid', () => {
+        component.yearDigits = yearDigitsMock.mockImplementation(() => 4);
+        const date = '12/12/2016';
+        const selectedValue = moment(date, inputFormat, true).format();
+        const viewDate = moment(date, inputFormat, true).startOf('month').format();
+
+        component.formatValueForEvent('onChange', {target: {value: date}});
+
+        expect(setStateMock.mock.calls.length).toBe(2);
+        expect(setStateMock.mock.calls[0][0].selectedDate.format()).toEqual(selectedValue);
+        expect(setStateMock.mock.calls[0][0].viewDate.format()).toEqual(viewDate);
+        expect(setStateMock.mock.calls[1][0].inputValue).toEqual('12/12/2016');
+      });
+
+      it('calls setState once when the year is 3 digits', () => {
+        component.yearDigits = yearDigitsMock.mockImplementation(() => 3);
+
+        component.formatValueForEvent('onChange', {target: {value: '12/12/201'}});
+
+        expect(setStateMock.mock.calls.length).toBe(1);
+        expect(setStateMock.mock.calls[0][0].inputValue).toEqual('12/12/201');
+      });
+
+      it('calls setState once when year is 2 digits but the event is not a blur', () => {
+        component.yearDigits = yearDigitsMock.mockImplementation(() => 2);
+
+        component.formatValueForEvent('onChange', {target: {value: '12/12/16'}});
+
+        expect(setStateMock.mock.calls.length).toBe(1);
+        expect(setStateMock.mock.calls[0][0].inputValue).toEqual('12/12/16');
+      });
+    });
+
+
+    describe('on blur', () => {
+      it('calls setState twice when year is 2 digits and is valid', () => {
+        component.yearDigits = yearDigitsMock.mockImplementation(() => 2);
+        const date = '12/12/16';
+        const selectedValue = moment(date, inputFormat, true).format();
+        const viewDate = moment(date, inputFormat, true).startOf('month').format();
+
+        component.formatValueForEvent('onBlur', {target: {value: date}});
+
+        expect(setStateMock.mock.calls.length).toBe(2);
+        expect(setStateMock.mock.calls[0][0].selectedDate.format()).toEqual(selectedValue);
+        expect(setStateMock.mock.calls[0][0].viewDate.format()).toEqual(viewDate);
+        expect(setStateMock.mock.calls[1][0].inputValue).toEqual('12/12/2016');
+      });
+
+      it('calls setState twice when year is 4 digits and is valid', () => {
+        component.yearDigits = yearDigitsMock.mockImplementation(() => 4);
+        const date = '12/12/2016';
+        const selectedValue = moment(date, inputFormat, true).format();
+        const viewDate = moment(date, inputFormat, true).startOf('month').format();
+        component.formatValueForEvent('onBlur', {target: {value: date}});
+
+        expect(setStateMock.mock.calls.length).toBe(2);
+        expect(setStateMock.mock.calls[0][0].selectedDate.format()).toEqual(selectedValue);
+        expect(setStateMock.mock.calls[0][0].viewDate.format()).toEqual(viewDate);
+        expect(setStateMock.mock.calls[1][0].inputValue).toEqual('12/12/2016');
+      });
+
+      it('calls setState once when year is 3 digits', () => {
+        component.yearDigits = yearDigitsMock.mockImplementation(() => 3);
+        const event = {target: {value: '12/12/201'}};
+
+        component.formatValueForEvent('onBlur', event);
+
+        expect(setStateMock.mock.calls.length).toBe(1);
+        expect(setStateMock.mock.calls[0][0].inputValue).toEqual('12/12/201');
+      });
+    });
+  });
 });
