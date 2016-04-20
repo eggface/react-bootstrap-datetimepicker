@@ -96,7 +96,8 @@ export default class DateTimeField extends Component {
     size: PropTypes.oneOf([Constants.SIZE_SMALL, Constants.SIZE_MEDIUM, Constants.SIZE_LARGE]),
     daysOfWeekDisabled: PropTypes.arrayOf(PropTypes.number),
     isValid: PropTypes.bool,
-    name: PropTypes.string
+    name: PropTypes.string,
+    tabIndex: PropTypes.string
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -500,12 +501,22 @@ export default class DateTimeField extends Component {
         />
         <div className={classnames("input-group date " + this.size(), {"has-error": !this.state.isValid})}
              ref="datetimepicker">
-          <input className="form-control" onChange={this.onChange} onBlur={this.onBlur} type="text"
-                 value={this.state.inputValue} {...this.props.inputProps} ref={this.props.inputRef}
-                 onKeyDown={this.onKeyDown} name={this.props.name} placeholder={this.props.defaultText}/>
-              <span className="input-group-addon" onBlur={this.onBlur} onClick={this.onClick} ref="dtpbutton">
-                <span className={classnames("glyphicon", this.state.buttonIcon)}/>
-              </span>
+          <input
+            className="form-control"
+            onChange={this.onChange}
+            onBlur={this.onBlur}
+            type="text"
+            tabIndex={this.props.tabIndex}
+            value={this.state.inputValue}
+            ref={this.props.inputRef}
+            onKeyDown={this.onKeyDown}
+            name={this.props.name}
+            placeholder={this.props.defaultText}
+            {...this.props.inputProps}
+          />
+          <span className="input-group-addon" onBlur={this.onBlur} onClick={this.onClick} ref="dtpbutton">
+            <span className={classnames("glyphicon", this.state.buttonIcon)}/>
+          </span>
         </div>
       </div>
     );

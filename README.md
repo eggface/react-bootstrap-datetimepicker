@@ -50,6 +50,7 @@ DateTimeField
 | **mode** | string | undefined | Allows to selectively display only the time picker ('time'), date picker ('date'), or month picker ('month') |
 | **defaultText** | string | {dateTime} | Sets the initial value. Could be an empty string, or helper text. |
 | **name** | string | undefined | Sets the name of the input element. |
+| **tabIndex** | string | undefined | Sets the tabIndex of the input element. |
 
 
 **Note**: Hitting the **Enter** key from the input field will produce the same effect as an **onBlur** event.
