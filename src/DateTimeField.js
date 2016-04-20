@@ -17,7 +17,8 @@ export default class DateTimeField extends Component {
     mode: Constants.MODE_DATETIME,
     onChange: (x) => {
       console.log(x);
-    }
+    },
+    onBlur: () => {}
   };
 
   constructor(props) {
@@ -80,6 +81,7 @@ export default class DateTimeField extends Component {
       PropTypes.number
     ]),
     onChange: PropTypes.func,
+    onBlur: PropTypes.func,
     format: PropTypes.string,
     inputProps: PropTypes.object,
     inputFormat: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
@@ -93,7 +95,8 @@ export default class DateTimeField extends Component {
     viewMode: PropTypes.string,
     size: PropTypes.oneOf([Constants.SIZE_SMALL, Constants.SIZE_MEDIUM, Constants.SIZE_LARGE]),
     daysOfWeekDisabled: PropTypes.arrayOf(PropTypes.number),
-    isValid: PropTypes.bool
+    isValid: PropTypes.bool,
+    name: PropTypes.string
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -130,9 +133,7 @@ export default class DateTimeField extends Component {
     return this.setState({
       inputValue: value
     }, function () {
-      if (this.props[eventName]) {
-        return this.props[eventName](moment(this.state.inputValue, this.state.inputFormat, true).format(this.props.format), value);
-      }
+      return this.props[eventName](moment(this.state.inputValue, this.state.inputFormat, true).format(this.props.format), value);
     });
 
   }
@@ -495,7 +496,7 @@ export default class DateTimeField extends Component {
              ref="datetimepicker">
           <input className="form-control" onChange={this.onChange} onBlur={this.onBlur} type="text"
                  value={this.state.inputValue} {...this.props.inputProps} ref={this.props.inputRef}
-                 placeholder={this.props.defaultText}/>
+                 name={this.props.name} placeholder={this.props.defaultText}/>
               <span className="input-group-addon" onBlur={this.onBlur} onClick={this.onClick} ref="dtpbutton">
                 <span className={classnames("glyphicon", this.state.buttonIcon)}/>
               </span>
