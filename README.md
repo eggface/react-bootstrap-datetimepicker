@@ -51,6 +51,9 @@ DateTimeField
 | **defaultText** | string | {dateTime} | Sets the initial value. Could be an empty string, or helper text. |
 | **name** | string | undefined | Sets the name of the input element. |
 
+
+**Note**: Hitting the **Enter** key from the input field will produce the same effect as an **onBlur** event.
+
 Default Format Based on Mode
 ========
 

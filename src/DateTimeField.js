@@ -154,6 +154,12 @@ export default class DateTimeField extends Component {
     this.formatValueForEvent('onBlur', event);
   };
 
+  onKeyDown = event => {
+    if (event.key === 'Enter') {
+      this.onBlur(event);
+    }
+  };
+
   checkIsValid = (value) => {
     return moment(value, this.state.inputFormat, true).isValid() || value === this.props.defaultText || value === '';
   }
@@ -496,7 +502,7 @@ export default class DateTimeField extends Component {
              ref="datetimepicker">
           <input className="form-control" onChange={this.onChange} onBlur={this.onBlur} type="text"
                  value={this.state.inputValue} {...this.props.inputProps} ref={this.props.inputRef}
-                 name={this.props.name} placeholder={this.props.defaultText}/>
+                 onKeyDown={this.onKeyDown} name={this.props.name} placeholder={this.props.defaultText}/>
               <span className="input-group-addon" onBlur={this.onBlur} onClick={this.onClick} ref="dtpbutton">
                 <span className={classnames("glyphicon", this.state.buttonIcon)}/>
               </span>

@@ -213,4 +213,32 @@ describe("DateTimeField", function () {
       });
     });
   });
+
+  describe('onKeyDown', () => {
+    let component, onBlurMock;
+
+    beforeEach(() => {
+      component = TestUtils.renderIntoDocument(<DateTimeField dateTime={happyDate.format("x")}
+                                                                    inputFormat='DD/MM/YYYY'/>);
+      onBlurMock = jest.genMockFunction();
+      component.onBlur = onBlurMock;
+    });
+
+    it('calls onBlur when the Enter key is pressed', () => {
+      const event = {key: 'Enter'};
+
+      component.onKeyDown(event);
+
+      expect(onBlurMock.mock.calls.length).toBe(1);
+      expect(onBlurMock.mock.calls[0][0]).toEqual(event);
+    });
+
+    it('does not call onBlur if any key other than Enter has been pressed', () => {
+      const event = {key: 'a'};
+
+      component.onKeyDown(event);
+
+      expect(onBlurMock.mock.calls.length).toBe(0);
+    });
+  });
 });
