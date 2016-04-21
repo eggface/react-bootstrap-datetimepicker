@@ -18,7 +18,8 @@ export default class DateTimeField extends Component {
     onChange: (x) => {
       console.log(x);
     },
-    onBlur: () => {}
+    onBlur: () => {},
+    onEnterKeyDown: () => {}
   };
 
   constructor(props) {
@@ -82,6 +83,7 @@ export default class DateTimeField extends Component {
     ]),
     onChange: PropTypes.func,
     onBlur: PropTypes.func,
+    onEnterKeyDown: PropTypes.func,
     format: PropTypes.string,
     inputProps: PropTypes.object,
     inputFormat: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
@@ -157,7 +159,7 @@ export default class DateTimeField extends Component {
 
   onKeyDown = event => {
     if (event.key === 'Enter') {
-      this.onBlur(event);
+      this.props.onEnterKeyDown(event);
     }
   };
 

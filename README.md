@@ -39,6 +39,7 @@ DateTimeField
 | **inputDisplayFormat** | string |  When there is **_no inputFormat given_**:<br> *see default format table below*. <br><br> When an **_inputFormat_** is given and it is a **string**: it takes the inputFormat. <br><br> When the **_inputFormat_** is an **array**: it takes the first inputFormat.  | Defines the *display* format of the date in the HTML input. It must be a format understandable by moment.js. <br><br> If there is an **_inputFormat_** given, the inputDisplayFormat must be one of the formats listed in the inputFormat|
 | **onChange** | function | x => console.log(x) | Callback trigger when the date changes. `x` is the new datetime value. |
 | **onBlur** | function | () => {} | Callback trigger when the date field blurs. |
+| **onEnterKeyDown** | function | () => {} | Callback trigger when the Enter key is pressed. |
 | **showToday** | boolean | true | Highlights today's date |
 | **size** | string | "md" | Changes the size of the date picker input field. Sizes: "sm", "md", "lg" |
 | **daysOfWeekDisabled** | array of integer | [] | Disables clicking on some days. Goes from 0 (Sunday) to 6 (Saturday). |
@@ -52,8 +53,6 @@ DateTimeField
 | **name** | string | undefined | Sets the name of the input element. |
 | **tabIndex** | string | undefined | Sets the tabIndex of the input element. |
 
-
-**Note**: Hitting the **Enter** key from the input field will produce the same effect as an **onBlur** event.
 
 Default Format Based on Mode
 ========
