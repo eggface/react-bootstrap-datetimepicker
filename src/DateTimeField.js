@@ -17,7 +17,9 @@ export default class DateTimeField extends Component {
     mode: Constants.MODE_DATETIME,
     onChange: (x) => {
       console.log(x);
-    }
+    },
+    onBlur: () => {},
+    onEnterKeyDown: () => {}
   };
 
   constructor(props) {
@@ -80,6 +82,8 @@ export default class DateTimeField extends Component {
       PropTypes.number
     ]),
     onChange: PropTypes.func,
+    onBlur: PropTypes.func,
+    onEnterKeyDown: PropTypes.func,
     format: PropTypes.string,
     inputProps: PropTypes.object,
     inputFormat: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
@@ -93,7 +97,9 @@ export default class DateTimeField extends Component {
     viewMode: PropTypes.string,
     size: PropTypes.oneOf([Constants.SIZE_SMALL, Constants.SIZE_MEDIUM, Constants.SIZE_LARGE]),
     daysOfWeekDisabled: PropTypes.arrayOf(PropTypes.number),
-    isValid: PropTypes.bool
+    isValid: PropTypes.bool,
+    name: PropTypes.string,
+    tabIndex: PropTypes.string
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -115,24 +121,22 @@ export default class DateTimeField extends Component {
     this.setIsValid(this.checkIsValid(value));
 
     let yearDigits = this.yearDigits(value);
+    let yearIsDone = yearDigits === 4 || (yearDigits === 2 && (eventName === 'onEnterKeyDown' || eventName === 'onBlur'));
+    let dateMatchesFormat = moment(value, this.state.inputFormat, true).isValid();
 
-    if (yearDigits === 4 || (eventName === 'onBlur' && yearDigits === 2)) {
-      if (moment(value, this.state.inputFormat, true).isValid()) {
-        this.setState({
-          selectedDate: moment(value, this.state.inputFormat, true),
-          viewDate: moment(value, this.state.inputFormat, true).startOf("month")
-        });
+    if (yearIsDone && dateMatchesFormat) {
+      this.setState({
+        selectedDate: moment(value, this.state.inputFormat, true),
+        viewDate: moment(value, this.state.inputFormat, true).startOf("month")
+      });
 
-        value = moment(value, this.state.inputFormat, true).format(this.state.inputDisplayFormat);
-      }
+      value = moment(value, this.state.inputFormat, true).format(this.state.inputDisplayFormat);
     }
 
     return this.setState({
       inputValue: value
     }, function () {
-      if (this.props[eventName]) {
-        return this.props[eventName](moment(this.state.inputValue, this.state.inputFormat, true).format(this.props.format), value);
-      }
+      return this.props[eventName](moment(this.state.inputValue, this.state.inputFormat, true).format(this.props.format), value);
     });
 
   }
@@ -151,6 +155,12 @@ export default class DateTimeField extends Component {
 
   onBlur = event => {
     this.formatValueForEvent('onBlur', event);
+  };
+
+  onKeyDown = event => {
+    if (event.key === 'Enter') {
+      this.formatValueForEvent('onEnterKeyDown', event);
+    }
   };
 
   checkIsValid = (value) => {
@@ -493,12 +503,22 @@ export default class DateTimeField extends Component {
         />
         <div className={classnames("input-group date " + this.size(), {"has-error": !this.state.isValid})}
              ref="datetimepicker">
-          <input className="form-control" onChange={this.onChange} onBlur={this.onBlur} type="text"
-                 value={this.state.inputValue} {...this.props.inputProps} ref={this.props.inputRef}
-                 placeholder={this.props.defaultText}/>
-              <span className="input-group-addon" onBlur={this.onBlur} onClick={this.onClick} ref="dtpbutton">
-                <span className={classnames("glyphicon", this.state.buttonIcon)}/>
-              </span>
+          <input
+            className="form-control"
+            onChange={this.onChange}
+            onBlur={this.onBlur}
+            type="text"
+            tabIndex={this.props.tabIndex}
+            value={this.state.inputValue}
+            ref={this.props.inputRef}
+            onKeyDown={this.onKeyDown}
+            name={this.props.name}
+            placeholder={this.props.defaultText}
+            {...this.props.inputProps}
+          />
+          <span className="input-group-addon" onBlur={this.onBlur} onClick={this.onClick} ref="dtpbutton">
+            <span className={classnames("glyphicon", this.state.buttonIcon)}/>
+          </span>
         </div>
       </div>
     );
