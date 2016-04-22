@@ -121,16 +121,16 @@ export default class DateTimeField extends Component {
     this.setIsValid(this.checkIsValid(value));
 
     let yearDigits = this.yearDigits(value);
+    let yearIsDone = yearDigits === 4 || (yearDigits === 2 && (eventName === 'onEnterKeyDown' || eventName === 'onBlur'));
+    let dateMatchesFormat = moment(value, this.state.inputFormat, true).isValid();
 
-    if (yearDigits === 4 || (eventName === 'onBlur' && yearDigits === 2)) {
-      if (moment(value, this.state.inputFormat, true).isValid()) {
-        this.setState({
-          selectedDate: moment(value, this.state.inputFormat, true),
-          viewDate: moment(value, this.state.inputFormat, true).startOf("month")
-        });
+    if (yearIsDone && dateMatchesFormat) {
+      this.setState({
+        selectedDate: moment(value, this.state.inputFormat, true),
+        viewDate: moment(value, this.state.inputFormat, true).startOf("month")
+      });
 
-        value = moment(value, this.state.inputFormat, true).format(this.state.inputDisplayFormat);
-      }
+      value = moment(value, this.state.inputFormat, true).format(this.state.inputDisplayFormat);
     }
 
     return this.setState({
@@ -159,7 +159,7 @@ export default class DateTimeField extends Component {
 
   onKeyDown = event => {
     if (event.key === 'Enter') {
-      this.props.onEnterKeyDown(event);
+      this.formatValueForEvent('onEnterKeyDown', event);
     }
   };
 
