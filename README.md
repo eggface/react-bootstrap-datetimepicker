@@ -69,13 +69,20 @@ Default Format Based on Mode
 Release Process
 ========
 Once your pull request has been merged to master:
+
 1. Make sure you have the latest changes by running `git pull` on the master branch.
 2. *(Optional)* Check that your changes are reflected in the lib/react-bootstrap-datetimepicker.js file by running `npm run build-npm` and checking the file manually from the lib folder.
 3. When you're happy with your changes, run on your console:
 
-	`npm run` + type of release (`patch-release`,  `minor-release`, `major-release`)
+	npm run patch-release
+	#OR
+	npm run minor-release
+	#OR
+	npm run major-release
 
-    For example: `npm run patch-release`
+Please respect [semantic versioning](http://semver.org/)!
+
+If the release command fails, then please read what the release command does (see `package.json`), and figure out which step of the process went wrong, so that you can re-try just that bit. If you get stuck, ping #ex-myob-widgets for help!
 
 Local linking to another project
 ========
