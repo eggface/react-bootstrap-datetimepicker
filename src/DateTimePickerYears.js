@@ -22,7 +22,6 @@ export default class DateTimePickerYears extends Component {
     for (let i = -1; i < 11; i++) {
       classes = {
         year: true,
-        old: i === -1 | i === 10,
         active: this.props.selectedDate.year() === year,
         disabled: (minDate && year < minDate.year()) || (maxDate && year > maxDate.year())
       };
