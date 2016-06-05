@@ -253,7 +253,31 @@ describe("DateTimeField", function () {
     });
   });
 
+  describe('yearDigits', () => {
+    let component;
 
+    describe('on date mode', () => {
+      it('returns the digits of the year', () => {
+        component = TestUtils.renderIntoDocument(<DateTimeField dateTime={happyDate.format("x")}
+                                                                inputFormat='DD/MM/YY' mode="date"/>);
+        expect(component.yearDigits('12/10/2016')).toEqual(4);
+        expect(component.yearDigits('12/10/20')).toEqual(2);
+        expect(component.yearDigits('12 10 ')).toEqual(0);
+        expect(component.yearDigits('12-10')).toEqual(0);
+      });
+    });
+
+    describe('on month mode', () => {
+      it('returns the digits of the year', () => {
+        component = TestUtils.renderIntoDocument(<DateTimeField dateTime={happyDate.format("x")}
+                                                                inputFormat='MM/YYYY' mode="month"/>);
+        expect(component.yearDigits('10/2016')).toEqual(4);
+        expect(component.yearDigits('10 20')).toEqual(2);
+        expect(component.yearDigits('10-')).toEqual(0);
+        expect(component.yearDigits('1')).toEqual(0);
+      });
+    });
+  });
 
   describe('onKeyDown', () => {
     let component, formatValueForEventMock;
