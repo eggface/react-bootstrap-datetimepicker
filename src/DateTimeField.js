@@ -142,10 +142,14 @@ export default class DateTimeField extends Component {
   }
 
   yearDigits(value) {
+    let separator = value.match(/\W/);
+    if (separator) {
+      separator = separator[0];
+    }
     if (this.props.mode === 'date') {
-      return value.split('/')[2] ? value.split('/')[2].length : 0; //assumes that format is separated by /
+      return value.split(separator)[2] ? value.split(separator)[2].length : 0;
     } else if (this.props.mode === 'month') {
-      return value.split(' ')[1] ? value.split(' ')[1].length : 0; //assumes that format is separated by a space
+      return value.split(separator)[1] ? value.split(separator)[1].length : 0;
     }
   }
 

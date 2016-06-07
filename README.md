@@ -54,8 +54,6 @@ DateTimeField
 | **tabIndex** | string | undefined | Sets the tabIndex of the input element. |
 
 
-**NOTE:** From version 0.2.0 onwards, the datepicker now assumes that a '/' or a space will be used to separate the date values (e.g. 'Dec 2016' or '12/12/2016'). See commit [a3e86d3083] (https://github.com/MYOB-Technology/react-bootstrap-datetimepicker/commit/a3e86d308371d069c503ce8b62984b40c0a39808).
-
 Default Format Based on Mode
 ========
 
