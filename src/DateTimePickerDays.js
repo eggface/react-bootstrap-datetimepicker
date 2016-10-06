@@ -63,7 +63,14 @@ export default class DateTimePickerDays extends Component {
         html.push(row);
         cells = [];
       }
+      const tmpPrevMonth = prevMonth.clone();
       prevMonth.add(1, "d");
+
+      // handle a bug in JS engine of PhantomJS where if a day in the month is Daylight Saving Time,
+      // when adding a day, it'll return the same day but the hour is changed to 23:00.
+      if (tmpPrevMonth.date() === prevMonth.date()) {
+        prevMonth.add(1, "h");
+      }
     }
     return html;
   }
