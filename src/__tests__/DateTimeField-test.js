@@ -24,6 +24,20 @@ describe("DateTimeField", function () {
       expect(input.value).toBe("06/05/90 7:30 AM");
     });
 
+    describe("when the defaultText prop is set", function() {
+      it("initialises the value to a provided dateTime prop", function () {
+        const component = TestUtils.renderIntoDocument(<DateTimeField defaultText="Foo" dateTime={happyDate.format("x")} />);
+        const input = TestUtils.findRenderedDOMComponentWithTag(component, "input");
+        expect(input.value).toBe("06/05/90 7:30 AM");
+      });
+
+      it("initialises the value to a blank string with an empty string dateTime", function () {
+        const component = TestUtils.renderIntoDocument(<DateTimeField defaultText="Foo" dateTime="" />);
+        const input = TestUtils.findRenderedDOMComponentWithTag(component, "input");
+        expect(input.value).toBe("");
+      });
+    });
+
   });
 
   describe("When changing props", function () {

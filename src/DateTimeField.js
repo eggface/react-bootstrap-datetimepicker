@@ -40,7 +40,7 @@ export default class DateTimeField extends Component {
       },
       viewDate: moment(dateTime, props.format, true).startOf("month"),
       selectedDate: moment(dateTime, props.format, true),
-      inputValue: (typeof props.defaultText !== "undefined") ? '' : moment(dateTime, props.format, true).format(this.resolvePropsInputDisplayFormat()),
+      inputValue: props.dateTime ? moment(dateTime, props.format, true).format(this.resolvePropsInputDisplayFormat()) : '',
       isValid: true
     };
   }
