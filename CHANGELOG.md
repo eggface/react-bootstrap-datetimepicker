@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 This change log adheres to standards from [Keep a CHANGELOG](http://keepachangelog.com).
 
+## [0.4.2] - 2016-11-11
+### Fixed
+* Initialise the DateTimeField's inputValue to dateTime, even if defaultText is set
+
+[0.4.2]: https://github.com/MYOB-Technology/react-bootstrap-datetimepicker/compare/v0.4.0...v0.4.2
+
 ## [0.2.3] - 2016-06-07
 ### Changed
 * Removed the assumption that dates typed in the input field will be separated by either a ‘/’ for date mode and a space for month mode.
