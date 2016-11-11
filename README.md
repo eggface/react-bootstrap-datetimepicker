@@ -33,7 +33,7 @@ DateTimeField
 
 | Name         | Type    | Default | Description |
 | ------------ | ------- | ------- | ----------- |
-| **dateTime** | string  | moment().format('x') | Represents the inital dateTime, this string is then parsed by moment.js |
+| **dateTime** | string  | moment().format('x') | Represents the initial dateTime, this string is then parsed by moment.js |
 | **format**   | string  | "x"     | Defines the format moment.js should use to parse and output the date to onChange |
 | **inputFormat** | string or array | *see default format table below* | Defines the *accepted* date formats in the HTML input. It must be a format understandable by moment.js |
 | **inputDisplayFormat** | string |  When there is **_no inputFormat given_**:<br> *see default format table below*. <br><br> When an **_inputFormat_** is given and it is a **string**: it takes the inputFormat. <br><br> When the **_inputFormat_** is an **array**: it takes the first inputFormat.  | Defines the *display* format of the date in the HTML input. It must be a format understandable by moment.js. <br><br> If there is an **_inputFormat_** given, the inputDisplayFormat must be one of the formats listed in the inputFormat|
@@ -49,7 +49,7 @@ DateTimeField
 | **minDate** | moment | undefined | The earliest date allowed for entry in the calendar view. |
 | **maxDate** | moment | undefined | The latest date allowed for entry in the calendar view. |
 | **mode** | string | undefined | Allows to selectively display only the time picker ('time'), date picker ('date'), or month picker ('month') |
-| **defaultText** | string | {dateTime} | Sets the initial value. Could be an empty string, or helper text. |
+| **defaultText** | string | undefined | Sets the input's placeholder value. Could be an empty string, or helper text. |
 | **name** | string | undefined | Sets the name of the input element. |
 | **tabIndex** | string | undefined | Sets the tabIndex of the input element. |
 
