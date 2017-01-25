@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 This change log adheres to standards from [Keep a CHANGELOG](http://keepachangelog.com).
 
+## [0.4.3] - 2017-01-25
+### Changed
+* Made min and max dates soft disable fields such that they will still be greyed out but but still be able to be clicked
+[0.4.3]: https://github.com/MYOB-Technology/react-bootstrap-datetimepicker/compare/v0.4.2...v0.4.3
+
 ## [0.4.2] - 2016-11-11
 ### Fixed
 * Initialise the DateTimeField's inputValue to dateTime, even if defaultText is set
