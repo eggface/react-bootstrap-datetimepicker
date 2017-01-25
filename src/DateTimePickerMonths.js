@@ -30,7 +30,7 @@ export default class DateTimePickerMonths extends Component {
       classes = {
         month: true,
         "active": i === month && this.props.viewDate.year() === this.props.selectedDate.year(),
-        disabled: (minDate && currentMonth.isBefore(minDate)) || (maxDate && currentMonth.isAfter(maxDate))
+        softDisabled: (minDate && currentMonth.isBefore(minDate)) || (maxDate && currentMonth.isAfter(maxDate))
       };
       months.push(<span className={classnames(classes)} key={i} onClick={onClick}>{monthsShort[i]}</span>);
       currentMonth.add(1, "months");
