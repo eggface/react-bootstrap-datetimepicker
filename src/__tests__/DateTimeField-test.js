@@ -74,6 +74,22 @@ describe("DateTimeField", function () {
       expect(input.value).toBe(happyDate.format("x"));
     });
 
+    it("changes the displayed empty when input is null", function () {
+      const Parent = createParent();
+      const input = TestUtils.findRenderedDOMComponentWithTag(Parent, "input");
+
+      Parent.setState({dateTime: null});
+      expect(input.value).toBe("");
+    });
+
+    it("changes the displayed empty when input is empty string", function () {
+      const Parent = createParent();
+      const input = TestUtils.findRenderedDOMComponentWithTag(Parent, "input");
+
+      Parent.setState({dateTime: ""});
+      expect(input.value).toBe("");
+    });
+
     it("changes the displayed format when array inputFormat changes, with no inputDisplayFormat", function () {
       const Parent = createParent();
       const input = TestUtils.findRenderedDOMComponentWithTag(Parent, "input");

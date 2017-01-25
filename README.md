@@ -86,8 +86,7 @@ Local linking to another project
 ========
 1. Run `npm run build-npm` from the react-bootstrap-datetimepicker console.
 2. In your other project's **package.json**,
-Use `"@myob/react-bootstrap-datetimepicker": "npm install ../../../../react-bootstrap-datetimepicker"` instead of `"@myob/react-bootstrap-datetimepicker": "0.0.25"` in the dependency list.
-*(use npm install + the path to your local react-bootstrap-datetimepicker folder instead of the version number)*
+Use `"@myob/react-bootstrap-datetimepicker": "#{local_path}/react-bootstrap-datetimepicker"` instead of `"@myob/react-bootstrap-datetimepicker": "0.0.25"` in the dependency list.
 3. Run `npm install @myob/react-bootstrap-datetimepicker` from the same folder level as the package.json.
 
 Update Warning
