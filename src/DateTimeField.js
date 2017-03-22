@@ -122,27 +122,27 @@ export default class DateTimeField extends Component {
   }
 
   formatValueForEvent(eventName, event) {
-    let value = event.target == null ? event : event.target.value;
+    const value = event.target == null ? event : event.target.value;
+    const inputDate = moment(value, this.state.inputFormat, true);
+    const yearDigits = this.yearDigits(value);
+    const yearIsDone = yearDigits === 4 || (yearDigits === 2 && (eventName === 'onEnterKeyDown' || eventName === 'onBlur'));
+    let formatValue = value;
 
     this.setIsValid(this.checkIsValid(value));
 
-    let yearDigits = this.yearDigits(value);
-    let yearIsDone = yearDigits === 4 || (yearDigits === 2 && (eventName === 'onEnterKeyDown' || eventName === 'onBlur'));
-    let dateMatchesFormat = moment(value, this.state.inputFormat, true).isValid();
-
-    if (yearIsDone && dateMatchesFormat) {
+    if (yearIsDone && inputDate.isValid()) {
       this.setState({
-        selectedDate: moment(value, this.state.inputFormat, true),
-        viewDate: moment(value, this.state.inputFormat, true).startOf("month")
+        selectedDate: inputDate,
+        viewDate: inputDate.clone().startOf("month")
       });
 
-      value = moment(value, this.state.inputFormat, true).format(this.state.inputDisplayFormat);
+      formatValue = inputDate.format(this.state.inputDisplayFormat);
     }
 
     return this.setState({
-      inputValue: value
+      inputValue: (eventName === 'onChange' ? value : formatValue)
     }, function () {
-      return this.props[eventName](moment(this.state.inputValue, this.state.inputFormat, true).format(this.props.format), value);
+      return this.props[eventName](inputDate.format(this.props.format), formatValue);
     });
 
   }

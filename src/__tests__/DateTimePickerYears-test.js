@@ -91,8 +91,8 @@ describe("DateTimePickerYears", function() {
 
       yearList.forEach(item => {
         year = +item.textContent;
-        if (year < currentYear -1 || year > currentYear + 1) expect(item.className).toMatch(/disabled/);
-        else expect(item.className).not.toMatch(/disabled/);
+        if (year < currentYear -1 || year > currentYear + 1) expect(item.className).toMatch(/softDisabled/);
+        else expect(item.className).not.toMatch(/softDisabled/);
       });
     });
   });

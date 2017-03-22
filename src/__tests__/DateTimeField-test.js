@@ -160,7 +160,7 @@ describe("DateTimeField", function () {
   describe('formatValueForEvent', () => {
     let component, setStateMock, yearDigitsMock, inputFormat;
     beforeEach(() => {
-      inputFormat = ['DD/MM/YYYY', 'DD/MM/YY'];
+      inputFormat = ['DD/MM/YYYY', 'DD/MM/YY', 'D/M/YYYY'];
       component = TestUtils.renderIntoDocument(<DateTimeField dateTime={happyDate.format("x")}
                                                               inputFormat={inputFormat}/>);
       setStateMock = jest.genMockFunction();
@@ -200,6 +200,15 @@ describe("DateTimeField", function () {
 
         expect(setStateMock.mock.calls.length).toBe(1);
         expect(setStateMock.mock.calls[0][0].inputValue).toEqual('12/12/16');
+      });
+
+      it('should not format input when event is onChange', () => {
+        component.yearDigits = yearDigitsMock.mockImplementation(() => 4);
+        const date = '12/1/2016';
+
+        component.formatValueForEvent('onChange', date);
+
+        expect(setStateMock.mock.calls[1][0].inputValue).toEqual('12/1/2016');
       });
     });
 
@@ -241,6 +250,15 @@ describe("DateTimeField", function () {
         expect(setStateMock.mock.calls.length).toBe(1);
         expect(setStateMock.mock.calls[0][0].inputValue).toEqual('12/12/201');
       });
+
+      it('should format input when event is onBlur', () => {
+        component.yearDigits = yearDigitsMock.mockImplementation(() => 4);
+        const date = '12/1/2016';
+
+        component.formatValueForEvent('onBlur', date);
+
+        expect(setStateMock.mock.calls[1][0].inputValue).toEqual('12/01/2016');
+      });
     });
 
     describe('on Enter key press', () => {
@@ -279,6 +297,15 @@ describe("DateTimeField", function () {
 
         expect(setStateMock.mock.calls.length).toBe(1);
         expect(setStateMock.mock.calls[0][0].inputValue).toEqual('12/12/201');
+      });
+
+      it('should format input when event is enter key press', () => {
+        component.yearDigits = yearDigitsMock.mockImplementation(() => 4);
+        const date = '12/1/2016';
+
+        component.formatValueForEvent('onEnterKeyDown', date);
+
+        expect(setStateMock.mock.calls[1][0].inputValue).toEqual('12/01/2016');
       });
     });
   });
