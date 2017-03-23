@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 This change log adheres to standards from [Keep a CHANGELOG](http://keepachangelog.com).
 
+## [0.6.0] - 2017-03-23
+### Changed
+* Do not format inputValue when onChange to solve [issue](https://github.com/MYOB-Technology/myob_widgets/issues/460)
+[0.6.0]: https://github.com/MYOB-Technology/react-bootstrap-datetimepicker/compare/v0.5.2...v0.6.0
+
 ## [0.5.2] - 2017-01-25
 ### Changed
 * Made min and max dates soft disable fields such that they will still be greyed out but but still be able to be clicked
