@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 This change log adheres to standards from [Keep a CHANGELOG](http://keepachangelog.com).
 
+## [0.7.0] - 2017-08-25
+### Changed
+* Allowed the dateTime property to accept an existing Moment instance, to allow preservation of UTC flag.
+
 ## [0.6.0] - 2017-03-23
 ### Changed
 * Do not format inputValue when onChange to solve [issue](https://github.com/MYOB-Technology/myob_widgets/issues/460)
