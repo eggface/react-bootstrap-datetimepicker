@@ -1,6 +1,6 @@
 {
   "name": "@myob/react-bootstrap-datetimepicker",
-  "version": "0.7.0",
+  "version": "1.0.0",
   "description": "A bootstrap datetime picker component for React.js",
   "homepage": "http://dev.quri.com/react-bootstrap-datetimepicker/",
   "repository": {
@@ -95,6 +95,7 @@
   "dependencies": {
     "babel-runtime": "^5.6.18",
     "classnames": "^2.2.1",
-    "moment": "^2.8.2"
+    "moment": "^2.8.2",
+    "prop-types": "^15.6.0"
   }
 }
