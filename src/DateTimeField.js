@@ -51,7 +51,9 @@ export default class DateTimeField extends Component {
       viewDate: moment(dateTime, this.props.format).startOf('month'),
       selectedDate: moment(dateTime, this.props.format),
       inputValue: props.dateTime
-        ? moment(dateTime, this.props.format).format(this.resolvePropsInputDisplayFormat())
+        ? moment(dateTime, this.props.format).format(
+            this.resolvePropsInputDisplayFormat(),
+          )
         : '',
       isValid: true,
     };
