@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 This change log adheres to standards from [Keep a CHANGELOG](http://keepachangelog.com).
 
+## [2.0.1] - 2018-04-03
+Update month picker for 'Hard' disabled not 'soft' disabled when date choosen over range min ~ max.
+
 ## [2.0.0] - 2018-03-06
 It appears that v1.0.0 was never actually released to NPM, but was updated in the package.json.
 This v2.0.0 builds upon the foundation that was laid in the previously unreleased changes, where support for newer versions of React was added.
