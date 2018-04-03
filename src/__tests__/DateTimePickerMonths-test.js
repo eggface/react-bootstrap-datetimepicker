@@ -185,7 +185,8 @@ describe('DateTimePickerMonths', function() {
       monthList.forEach(item => {
         month = labels.indexOf(item.textContent);
         if (month < currentMonth - 1 || month > currentMonth + 1)
-          expect(item.className).toMatch(/softDisabled/);
+          // expect(item.className).toMatch(/softDisabled/);
+          expect(item.className).toMatch(/disabled/);
         else expect(item.className).not.toMatch(/softDisabled/);
       });
     });

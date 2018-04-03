@@ -44,7 +44,8 @@ export default class DateTimePickerMonths extends Component {
         active:
           i === month &&
           this.props.viewDate.year() === this.props.selectedDate.year(),
-        softDisabled:
+        // softDisabled:
+        disabled:
           (minDate && currentMonth.isBefore(minDate)) ||
           (maxDate && currentMonth.isAfter(maxDate)),
       };
